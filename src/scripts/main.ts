@@ -1,5 +1,5 @@
 import { CARS, TOTAL_LAPS } from "./config";
-import { Race, type CarState } from "./race";
+import { Race, Parade, type CarState } from "./race";
 
 // DOM elements
 const bettingPanel = document.getElementById("betting-panel")!;
@@ -17,6 +17,10 @@ const dots = CARS.map(
 
 let selectedCarId: number | null = null;
 let race: Race | null = null;
+
+// Start parade immediately so dots circulate during betting
+const parade = new Parade(trackPath, dots);
+parade.start();
 
 // --- Betting ---
 
@@ -46,6 +50,8 @@ carButtons.forEach((btn) => {
 
 startRaceBtn.addEventListener("click", () => {
   if (selectedCarId === null) return;
+
+  parade.stop();
 
   // Switch to race view
   bettingPanel.classList.add("hidden");
@@ -135,9 +141,6 @@ raceAgainBtn.addEventListener("click", () => {
     (el as HTMLElement).style.order = "";
   });
 
-  // Reset dots to origin
-  dots.forEach((dot) => {
-    dot.setAttribute("cx", "0");
-    dot.setAttribute("cy", "0");
-  });
+  // Restart parade
+  parade.start();
 });

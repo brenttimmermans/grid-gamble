@@ -132,3 +132,62 @@ export class Race {
     }
   }
 }
+
+const PARADE_SPEED = 0.08; // slow, constant cruise
+const PARADE_SPACING = 0.06; // 6% of track between each dot
+
+export class Parade {
+  private path: SVGPathElement;
+  private dots: SVGCircleElement[];
+  private totalLength: number;
+  private distances: number[];
+  private animationId: number | null = null;
+  private lastTimestamp: number = 0;
+
+  constructor(path: SVGPathElement, dots: SVGCircleElement[]) {
+    this.path = path;
+    this.dots = dots;
+    this.totalLength = path.getTotalLength();
+    this.distances = CARS.map((_, i) => i * PARADE_SPACING * this.totalLength);
+  }
+
+  start(): void {
+    this.lastTimestamp = 0;
+    this.positionAll();
+    this.animationId = requestAnimationFrame((ts) => this.animate(ts));
+  }
+
+  stop(): void {
+    if (this.animationId !== null) {
+      cancelAnimationFrame(this.animationId);
+      this.animationId = null;
+    }
+  }
+
+  private animate(timestamp: number): void {
+    if (this.lastTimestamp === 0) {
+      this.lastTimestamp = timestamp;
+      this.animationId = requestAnimationFrame((ts) => this.animate(ts));
+      return;
+    }
+
+    const delta = Math.min(timestamp - this.lastTimestamp, 50);
+    this.lastTimestamp = timestamp;
+
+    for (let i = 0; i < this.distances.length; i++) {
+      this.distances[i] += PARADE_SPEED * delta;
+    }
+
+    this.positionAll();
+    this.animationId = requestAnimationFrame((ts) => this.animate(ts));
+  }
+
+  private positionAll(): void {
+    for (let i = 0; i < this.dots.length; i++) {
+      const progress = this.distances[i] % this.totalLength;
+      const point = this.path.getPointAtLength(progress);
+      this.dots[i].setAttribute("cx", String(point.x));
+      this.dots[i].setAttribute("cy", String(point.y));
+    }
+  }
+}
