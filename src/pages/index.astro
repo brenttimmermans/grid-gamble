@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Track from "../components/Track.astro";
+import BettingPanel from "../components/BettingPanel.astro";
+import RaceHud from "../components/RaceHud.astro";
+import ResultsOverlay from "../components/ResultsOverlay.astro";
+---
+
+<Layout title="Grid Gamble">
+  <main class="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 p-6 max-w-5xl mx-auto">
+    <div class="flex-1 w-full max-w-lg">
+      <Track />
+    </div>
+
+    <div class="flex-shrink-0 w-full max-w-xs flex flex-col gap-6">
+      <h1 class="text-3xl font-extrabold text-center lg:text-left">Grid Gamble</h1>
+      <BettingPanel />
+      <RaceHud />
+    </div>
+  </main>
+
+  <ResultsOverlay />
+
+  <script>
+    import "../scripts/main";
+  </script>
+</Layout>

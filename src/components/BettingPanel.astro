@@ -1,0 +1,31 @@
+---
+import { CARS } from "../scripts/config";
+---
+
+<div id="betting-panel" class="flex flex-col items-center gap-6">
+  <h2 class="text-2xl font-bold text-gray-200">Pick Your Winner</h2>
+
+  <div class="flex flex-wrap justify-center gap-3">
+    {
+      CARS.map((car) => (
+        <button
+          data-car-id={car.id}
+          class="car-btn flex items-center gap-2 px-5 py-3 rounded-lg border-2 border-gray-700 bg-gray-800 hover:bg-gray-700 cursor-pointer transition-colors"
+        >
+          <span
+            class="inline-block w-4 h-4 rounded-full"
+            style={`background-color: ${car.color}`}
+          />
+          <span class="font-medium">{car.name}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  <button
+    id="start-race-btn"
+    class="hidden px-8 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 font-bold text-lg cursor-pointer transition-colors"
+  >
+    Start Race
+  </button>
+</div>

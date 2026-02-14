@@ -1,0 +1,37 @@
+---
+import { CARS } from "../scripts/config";
+---
+
+<div
+  id="results-overlay"
+  class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+>
+  <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 max-w-sm w-full mx-4 text-center flex flex-col gap-5">
+    <div id="result-message" class="text-2xl font-bold"></div>
+
+    <div id="final-standings" class="flex flex-col gap-1">
+      {
+        CARS.map((car, i) => (
+          <div
+            data-standing-id={car.id}
+            class="flex items-center gap-2 px-3 py-1.5 rounded bg-gray-800/60 text-sm"
+          >
+            <span class="font-mono text-gray-500 w-5">{i + 1}.</span>
+            <span
+              class="inline-block w-3 h-3 rounded-full"
+              style={`background-color: ${car.color}`}
+            />
+            <span class="text-gray-300">{car.name}</span>
+          </div>
+        ))
+      }
+    </div>
+
+    <button
+      id="race-again-btn"
+      class="px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 font-bold cursor-pointer transition-colors"
+    >
+      Race Again
+    </button>
+  </div>
+</div>
